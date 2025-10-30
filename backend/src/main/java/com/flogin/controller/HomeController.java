@@ -1,3 +1,5 @@
+// java code để chạy thử backend với route /, sau khi update code sẽ bỏ....
+
 package com.flogin.controller;
 
 import org.springframework.stereotype.Controller;

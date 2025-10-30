@@ -1,6 +1,3 @@
-// ===================================================
-// UserRepository.java
-// ===================================================
 package com.flogin.repository;
 
 import com.flogin.entity.User;
