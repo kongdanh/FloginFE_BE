@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Flogin Backend</a> &gt; <a href="index.source.html" class="el_package">com.flogin.service</a> &gt; <span class="el_source">AuthService.java</span></div><h1>AuthService.java</h1><pre class="source lang-java linenums">package com.flogin.service;
+
+import com.flogin.dto.LoginRequest;
+import com.flogin.dto.LoginResponse;
+import com.flogin.entity.User;
+import com.flogin.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L12">public class AuthService {</span>
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public LoginResponse authenticate(LoginRequest request) {
+        // 1. Tìm user trong database
+<span class="fc" id="L19">        Optional&lt;User&gt; userOptional = userRepository.findByUsername(request.username());</span>
+
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (userOptional.isEmpty()) {</span>
+<span class="fc" id="L22">            throw new RuntimeException(&quot;Sai tên tài khoản hoặc mật khẩu!&quot;);</span>
+        }
+
+<span class="fc" id="L25">        User user = userOptional.get();</span>
+
+        // 2. KIỂM TRA MẬT KHẨU
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (!user.getPassword().equals(request.password())) {</span>
+<span class="fc" id="L29">            throw new RuntimeException(&quot;Sai tên tài khoản hoặc mật khẩu!&quot;);</span>
+        }
+
+        // 3. THÊM BƯỚC KIỂM TRA NÀY
+        // (Sử dụng hàm isActive() từ file User.java của bạn)
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (!user.isActive()) {</span>
+<span class="fc" id="L35">            throw new RuntimeException(&quot;Tài khoản của bạn đã bị khóa!&quot;);</span>
+        }
+
+        // 4. Tạo token nếu mọi thứ đều ổn
+<span class="fc" id="L39">        String token = &quot;dummy-token-for-&quot; + user.getUsername();</span>
+<span class="fc" id="L40">        return new LoginResponse(&quot;Đăng nhập thành công&quot;, token);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Product.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Flogin Backend</a> &gt; <a href="index.source.html" class="el_package">com.flogin.entity</a> &gt; <span class="el_source">Product.java</span></div><h1>Product.java</h1><pre class="source lang-java linenums">package com.flogin.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+/**
+ * Entity class representing a Product
+ * Manages product information and inventory
+ */
+@Entity
+@Table(name = &quot;products&quot;, indexes = {
+    @Index(name = &quot;idx_name&quot;, columnList = &quot;name&quot;),
+    @Index(name = &quot;idx_category&quot;, columnList = &quot;category_id&quot;),
+    @Index(name = &quot;idx_price&quot;, columnList = &quot;price&quot;),
+    @Index(name = &quot;idx_created_by&quot;, columnList = &quot;created_by&quot;),
+    @Index(name = &quot;idx_created_at&quot;, columnList = &quot;created_at&quot;)
+})
+<span class="pc bnc" id="L26" title="All 78 branches missed.">@Data</span>
+<span class="fc" id="L27">@NoArgsConstructor</span>
+<span class="nc" id="L28">@AllArgsConstructor</span>
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = &quot;Product name is required&quot;)
+    @Size(min = 3, max = 100, message = &quot;Product name must be between 3 and 100 characters&quot;)
+    @Column(nullable = false, length = 100)
+<span class="nc" id="L38">    private String name;</span>
+
+    @NotNull(message = &quot;Price is required&quot;)
+    @DecimalMin(value = &quot;0.01&quot;, message = &quot;Price must be greater than 0&quot;)
+    @DecimalMax(value = &quot;999999999.99&quot;, message = &quot;Price must not exceed 999,999,999.99&quot;)
+    @Column(nullable = false, precision = 12, scale = 2)
+<span class="nc" id="L44">    private BigDecimal price;</span>
+
+<span class="pc" id="L46">    @NotNull(message = &quot;Quantity is required&quot;)</span>
+    @Min(value = 0, message = &quot;Quantity cannot be negative&quot;)
+    @Max(value = 99999, message = &quot;Quantity must not exceed 99,999&quot;)
+    @Column(nullable = false)
+<span class="pc" id="L50">    private Integer quantity = 0;</span>
+
+    @Size(max = 500, message = &quot;Description must not exceed 500 characters&quot;)
+    @Column(length = 500)
+<span class="nc" id="L54">    private String description;</span>
+
+    // Relationships
+    @NotNull(message = &quot;Category is required&quot;)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;category_id&quot;, nullable = false, 
+                foreignKey = @ForeignKey(name = &quot;fk_product_category&quot;))
+<span class="fc" id="L61">    private Category category;</span>
+
+    @NotNull(message = &quot;Creator is required&quot;)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;created_by&quot;, nullable = false, 
+                foreignKey = @ForeignKey(name = &quot;fk_product_user&quot;))
+<span class="fc" id="L67">    private User createdBy;</span>
+
+    @CreationTimestamp
+    @Column(name = &quot;created_at&quot;, nullable = false, updatable = false)
+<span class="nc" id="L71">    private LocalDateTime createdAt;</span>
+
+    @UpdateTimestamp
+    @Column(name = &quot;updated_at&quot;)
+<span class="nc" id="L75">    private LocalDateTime updatedAt;</span>
+
+    /**
+     * Constructor for testing purposes
+     */
+<span class="nc" id="L80">    public Product(String name, BigDecimal price, Integer quantity) {</span>
+<span class="nc" id="L81">        this.name = name;</span>
+<span class="nc" id="L82">        this.price = price;</span>
+<span class="nc" id="L83">        this.quantity = quantity;</span>
+<span class="nc" id="L84">    }</span>
+
+    /**
+     * Constructor with category
+     */
+<span class="nc" id="L89">    public Product(String name, BigDecimal price, Integer quantity, Category category, User createdBy) {</span>
+<span class="nc" id="L90">        this.name = name;</span>
+<span class="nc" id="L91">        this.price = price;</span>
+<span class="nc" id="L92">        this.quantity = quantity;</span>
+<span class="nc" id="L93">        this.category = category;</span>
+<span class="nc" id="L94">        this.createdBy = createdBy;</span>
+<span class="nc" id="L95">    }</span>
+
+    /**
+     * Full constructor
+     */
+    public Product(String name, BigDecimal price, Integer quantity, String description, 
+<span class="nc" id="L101">                   Category category, User createdBy) {</span>
+<span class="nc" id="L102">        this.name = name;</span>
+<span class="nc" id="L103">        this.price = price;</span>
+<span class="nc" id="L104">        this.quantity = quantity;</span>
+<span class="nc" id="L105">        this.description = description;</span>
+<span class="nc" id="L106">        this.category = category;</span>
+<span class="nc" id="L107">        this.createdBy = createdBy;</span>
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * Check if product is in stock
+     */
+    @Transient
+    public boolean isInStock() {
+<span class="nc bnc" id="L115" title="All 4 branches missed.">        return this.quantity != null &amp;&amp; this.quantity &gt; 0;</span>
+    }
+
+    /**
+     * Check if product is low stock (less than 10)
+     */
+    @Transient
+    public boolean isLowStock() {
+<span class="nc bnc" id="L123" title="All 6 branches missed.">        return this.quantity != null &amp;&amp; this.quantity &gt; 0 &amp;&amp; this.quantity &lt; 10;</span>
+    }
+
+    /**
+     * Check if product is out of stock
+     */
+    @Transient
+    public boolean isOutOfStock() {
+<span class="nc bnc" id="L131" title="All 4 branches missed.">        return this.quantity == null || this.quantity &lt;= 0;</span>
+    }
+
+    /**
+     * Get formatted price with currency
+     */
+    @Transient
+    public String getFormattedPrice() {
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (price == null) return &quot;0 VND&quot;;</span>
+<span class="nc" id="L140">        return String.format(&quot;%,.0f VND&quot;, price);</span>
+    }
+
+    /**
+     * Update stock quantity
+     */
+    public void updateStock(Integer newQuantity) {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (newQuantity &lt; 0) {</span>
+<span class="nc" id="L148">            throw new IllegalArgumentException(&quot;Quantity cannot be negative&quot;);</span>
+        }
+<span class="nc" id="L150">        this.quantity = newQuantity;</span>
+<span class="nc" id="L151">    }</span>
+
+    /**
+     * Decrease stock (for sale)
+     */
+    public void decreaseStock(Integer amount) {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (amount &lt; 0) {</span>
+<span class="nc" id="L158">            throw new IllegalArgumentException(&quot;Amount cannot be negative&quot;);</span>
+        }
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (this.quantity &lt; amount) {</span>
+<span class="nc" id="L161">            throw new IllegalArgumentException(&quot;Insufficient stock. Available: &quot; + this.quantity);</span>
+        }
+<span class="nc" id="L163">        this.quantity -= amount;</span>
+<span class="nc" id="L164">    }</span>
+
+    /**
+     * Increase stock (for restock)
+     */
+    public void increaseStock(Integer amount) {
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (amount &lt; 0) {</span>
+<span class="nc" id="L171">            throw new IllegalArgumentException(&quot;Amount cannot be negative&quot;);</span>
+        }
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (this.quantity + amount &gt; 99999) {</span>
+<span class="nc" id="L174">            throw new IllegalArgumentException(&quot;Stock cannot exceed 99,999&quot;);</span>
+        }
+<span class="nc" id="L176">        this.quantity += amount;</span>
+<span class="nc" id="L177">    }</span>
+
+    /**
+     * Validate product data
+     */
+    @PrePersist
+    @PreUpdate
+    private void validateProduct() {
+<span class="nc bnc" id="L185" title="All 4 branches missed.">        if (price != null &amp;&amp; price.compareTo(BigDecimal.ZERO) &lt;= 0) {</span>
+<span class="nc" id="L186">            throw new IllegalArgumentException(&quot;Price must be greater than 0&quot;);</span>
+        }
+<span class="nc bnc" id="L188" title="All 6 branches missed.">        if (quantity != null &amp;&amp; (quantity &lt; 0 || quantity &gt; 99999)) {</span>
+<span class="nc" id="L189">            throw new IllegalArgumentException(&quot;Quantity must be between 0 and 99,999&quot;);</span>
+        }
+<span class="nc bnc" id="L191" title="All 6 branches missed.">        if (name != null &amp;&amp; (name.length() &lt; 3 || name.length() &gt; 100)) {</span>
+<span class="nc" id="L192">            throw new IllegalArgumentException(&quot;Product name must be between 3 and 100 characters&quot;);</span>
+        }
+<span class="nc" id="L194">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L198">        return &quot;Product{&quot; +</span>
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, price=&quot; + price +
+                &quot;, quantity=&quot; + quantity +
+                &quot;, description='&quot; + description + '\'' +
+<span class="nc bnc" id="L204" title="All 2 branches missed.">                &quot;, categoryId=&quot; + (category != null ? category.getId() : null) +</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                &quot;, createdById=&quot; + (createdBy != null ? createdBy.getId() : null) +</span>
+                &quot;, createdAt=&quot; + createdAt +
+                &quot;, updatedAt=&quot; + updatedAt +
+                '}';
+    }
+<span class="fc" id="L210">    public Long getId() { return id; }</span>
+<span class="fc" id="L211">    public String getTen() { return name; }</span>
+<span class="fc" id="L212">    public BigDecimal getGia() { return price; }</span>
+<span class="fc" id="L213">    public Integer getSoLuong() { return quantity; }</span>
+
+<span class="fc" id="L215">    public void setTen(String ten) { this.name = ten; }</span>
+<span class="fc" id="L216">    public void setGia(BigDecimal gia) { this.price = gia; }</span>
+<span class="fc" id="L217">    public void setSoLuong(Integer soLuong) { this.quantity= soLuong; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

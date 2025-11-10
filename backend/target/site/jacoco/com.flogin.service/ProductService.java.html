@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Flogin Backend</a> &gt; <a href="index.source.html" class="el_package">com.flogin.service</a> &gt; <span class="el_source">ProductService.java</span></div><h1>ProductService.java</h1><pre class="source lang-java linenums">package com.flogin.service;
+
+import com.flogin.dto.ProductDto;
+import com.flogin.entity.Category;
+import com.flogin.entity.Product;
+import com.flogin.entity.User;
+import com.flogin.repository.CategoryRepository;
+import com.flogin.repository.ProductRepository;
+import com.flogin.repository.UserRepository; 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+<span class="fc" id="L17">public class ProductService {</span>
+
+    @Autowired
+    private ProductRepository productRepository;
+    
+    @Autowired
+    private UserRepository userRepository; // &lt;-- 3. AUTOWIRE
+
+    @Autowired
+    private CategoryRepository categoryRepository; // &lt;-- 4. AUTOWIRE
+
+    // LẤY TẤT CẢ SẢN PHẨM (READ ALL)
+    public List&lt;ProductDto&gt; getAllProducts() {
+<span class="fc" id="L30">        return productRepository.findAll().stream()</span>
+<span class="fc" id="L31">                .map(this::convertToDto)</span>
+<span class="fc" id="L32">                .collect(Collectors.toList());</span>
+    }
+
+    // LẤY 1 SẢN PHẨM (READ ONE)
+    public ProductDto getProductById(Long id) {
+<span class="fc" id="L37">        Product product = productRepository.findById(id)</span>
+<span class="fc" id="L38">                .orElseThrow(() -&gt; new RuntimeException(&quot;Không tìm thấy sản phẩm với id: &quot; + id));</span>
+<span class="fc" id="L39">        return convertToDto(product);</span>
+    }
+
+    // TẠO SẢN PHẨM (CREATE)
+    public ProductDto createProduct(ProductDto productDto) {
+<span class="fc" id="L44">        Product product = convertToEntity(productDto); // 5. SỬ DỤNG HÀM MỚI</span>
+<span class="fc" id="L45">        Product savedProduct = productRepository.save(product);</span>
+<span class="fc" id="L46">        return convertToDto(savedProduct);</span>
+    }
+
+    // CẬP NHẬT SẢN PHẨM (UPDATE)
+    public ProductDto updateProduct(Long id, ProductDto productDto) {
+<span class="fc" id="L51">        Product existingProduct = productRepository.findById(id)</span>
+<span class="fc" id="L52">                .orElseThrow(() -&gt; new RuntimeException(&quot;Không tìm thấy sản phẩm với id: &quot; + id));</span>
+
+        // Cập nhật các trường
+<span class="fc" id="L55">        existingProduct.setTen(productDto.getTen());</span>
+<span class="fc" id="L56">        existingProduct.setGia(productDto.getGia());</span>
+<span class="fc" id="L57">        existingProduct.setSoLuong(productDto.getSoLuong());</span>
+
+        // 6. CẬP NHẬT CATEGORY VÀ USER (NẾU CẦN)
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if(productDto.getCategoryId() != null) {</span>
+<span class="fc" id="L61">            Category category = categoryRepository.findById(productDto.getCategoryId())</span>
+<span class="fc" id="L62">                    .orElseThrow(() -&gt; new RuntimeException(&quot;Không tìm thấy Category ID: &quot; + productDto.getCategoryId()));</span>
+<span class="fc" id="L63">            existingProduct.setCategory(category);</span>
+        }
+        
+        // (Không cho phép cập nhật người tạo sản phẩm)
+
+<span class="fc" id="L68">        Product updatedProduct = productRepository.save(existingProduct);</span>
+<span class="fc" id="L69">        return convertToDto(updatedProduct);</span>
+    }
+
+    // XÓA SẢN PHẨM (DELETE)
+    public void deleteProduct(Long id) {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (!productRepository.existsById(id)) {</span>
+<span class="fc" id="L75">            throw new RuntimeException(&quot;Không tìm thấy sản phẩm với id: &quot; + id);</span>
+        }
+<span class="fc" id="L77">        productRepository.deleteById(id);</span>
+<span class="fc" id="L78">    }</span>
+
+    // --- CÁC HÀM TIỆN ÍCH CHUYỂN ĐỔI ---
+    
+    private ProductDto convertToDto(Product product) {
+<span class="fc" id="L83">        ProductDto dto = new ProductDto();</span>
+<span class="fc" id="L84">        dto.setId(product.getId());</span>
+<span class="fc" id="L85">        dto.setTen(product.getTen());     // Dùng getTen() để lấy 'name'</span>
+<span class="fc" id="L86">        dto.setGia(product.getGia());     // Dùng getGia() để lấy 'price'</span>
+<span class="fc" id="L87">        dto.setSoLuong(product.getSoLuong()); // Dùng getSoLuong() để lấy 'quantity'</span>
+        
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (product.getCategory() != null) {</span>
+<span class="fc" id="L90">            dto.setCategoryId(product.getCategory().getId());</span>
+        }
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (product.getCreatedBy() != null) {</span>
+<span class="fc" id="L93">            dto.setCreatedById(product.getCreatedBy().getId());</span>
+        }
+<span class="fc" id="L95">        return dto;</span>
+    }
+
+    private Product convertToEntity(ProductDto dto) {
+<span class="fc" id="L99">        Product product = new Product();</span>
+        
+        // 7. SỬA HÀM NÀY ĐỂ FIX LỖI @NotNull
+<span class="fc" id="L102">        product.setTen(dto.getTen());       // Dùng setTen() để set 'name'</span>
+<span class="fc" id="L103">        product.setGia(dto.getGia());       // Dùng setGia() để set 'price'</span>
+<span class="fc" id="L104">        product.setSoLuong(dto.getSoLuong()); // Dùng setSoLuong() để set 'quantity'</span>
+
+        // Lấy Category từ ID
+<span class="fc" id="L107">        Category category = categoryRepository.findById(dto.getCategoryId())</span>
+<span class="fc" id="L108">                .orElseThrow(() -&gt; new RuntimeException(&quot;Không tìm thấy Category ID: &quot; + dto.getCategoryId()));</span>
+<span class="fc" id="L109">        product.setCategory(category);</span>
+
+        // Lấy User (người tạo) từ ID
+<span class="fc" id="L112">        User createdBy = userRepository.findById(dto.getCreatedById())</span>
+<span class="fc" id="L113">                .orElseThrow(() -&gt; new RuntimeException(&quot;Không tìm thấy User ID: &quot; + dto.getCreatedById()));</span>
+<span class="fc" id="L114">        product.setCreatedBy(createdBy);</span>
+        
+        // Bỏ qua ID (vì đây là tạo mới) và timestamps (tự động tạo)
+<span class="fc" id="L117">        return product;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

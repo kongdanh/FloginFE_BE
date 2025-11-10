@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HomeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Flogin Backend</a> &gt; <a href="index.source.html" class="el_package">com.flogin.controller</a> &gt; <span class="el_source">HomeController.java</span></div><h1>HomeController.java</h1><pre class="source lang-java linenums">// java code để chạy thử backend với route /, sau khi update code sẽ bỏ....
+
+package com.flogin.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+<span class="nc" id="L10">public class HomeController {</span>
+
+    @GetMapping(&quot;/&quot;)
+    @ResponseBody
+    public String home() {
+<span class="nc" id="L15">        return &quot;&quot;&quot;</span>
+                &lt;html&gt;
+                &lt;head&gt;
+                    &lt;title&gt;Backend Test&lt;/title&gt;
+                    &lt;style&gt;
+                        body {
+                            background-color: #4CAF50; /* Màu xanh lá */
+                            color: white;
+                            font-family: Arial, sans-serif;
+                            text-align: center;
+                            margin-top: 20%;
+                        }
+                    &lt;/style&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                    &lt;h1&gt;✅ Backend đang chạy thành công!&lt;/h1&gt;
+                    &lt;p&gt;Trang này được trả về từ Spring Boot Controller.&lt;/p&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                &quot;&quot;&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

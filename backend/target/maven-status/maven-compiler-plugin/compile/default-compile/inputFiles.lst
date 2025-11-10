@@ -7,6 +7,7 @@ D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogi
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\FloginApplication.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\service\AuthService.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\controller\HomeController.java
+D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\config\EncodingFilter.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\controller\CategoryController.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\service\CategoryService.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\entity\Category.java
@@ -15,6 +16,7 @@ D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogi
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\dto\LoginRequest.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\repository\LoginHistoryRepository.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\service\ProductService.java
+D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\config\GlobalExceptionHandler.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\controller\AuthController.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\dto\ProductDto.java
 D:\S1Y3\Software_testing\DOAN_cuoiki\FloginFE_BE\backend\src\main\java\com\flogin\entity\User.java
