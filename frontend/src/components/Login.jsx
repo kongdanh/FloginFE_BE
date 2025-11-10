@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
+<<<<<<< HEAD
+=======
+import { useNavigate } from "react-router-dom";
+>>>>>>> 773f153d2b8edfbf0fc232657f40c65fba79dc46
 import "./Login.css";
 
 import BackgroundImage from "../assets/background.png";
 import Logo from "../assets/Logo-DH-Sai-Gon-SGU.png";
+<<<<<<< HEAD
 
+=======
+import { login as loginService } from "../service/authService"; 
+>>>>>>> 773f153d2b8edfbf0fc232657f40c65fba79dc46
 import { validateUsername, validatePassword } from "../utils/validation";
 
 const Login = () => {
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
 
+<<<<<<< HEAD
 
   const [errors, setErrors] = useState({});
   const [showApiError, setShowApiError] = useState(false);
@@ -20,6 +29,17 @@ const Login = () => {
     event.preventDefault();
     setErrors({}); 
     setShowApiError(false);
+=======
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setErrors({});
+    setApiError("");
+>>>>>>> 773f153d2b8edfbf0fc232657f40c65fba79dc46
 
     const usernameError = validateUsername(inputUsername);
     const passwordError = validatePassword(inputPassword);
@@ -33,6 +53,7 @@ const Login = () => {
     }
 
     setLoading(true);
+<<<<<<< HEAD
     await delay(500);
     console.log(`Username :${inputUsername}, Password :${inputPassword}`);
 
@@ -49,6 +70,30 @@ const Login = () => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+=======
+    try {
+      console.log(`Đang gọi API... Username: ${inputUsername}`);
+      const data = await loginService(inputUsername, inputPassword);
+
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+        navigate("/products");
+      } else {
+        setApiError("Lỗi không xác định từ server.");
+      }
+
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setApiError(error.response.data.message);
+      } else {
+        setApiError(error.message || "Đã xảy ra lỗi, vui lòng thử lại.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+>>>>>>> 773f153d2b8edfbf0fc232657f40c65fba79dc46
   return (
     <div
       className="sign-in__wrapper"
@@ -63,6 +108,7 @@ const Login = () => {
         />
         <div className="h4 mb-2 text-center">Sign In</div>
 
+<<<<<<< HEAD
         {showApiError ? (
           <Alert
             className="mb-2"
@@ -77,6 +123,20 @@ const Login = () => {
         )}
 
         {/* 4. Hiển thị lỗi validation cho Username */}
+=======
+        {apiError && (
+          <Alert
+            className="mb-2"
+            variant="danger"
+            onClose={() => setApiError("")}
+            dismissible
+            data-testid="login-message" 
+          >
+            {apiError}
+          </Alert>
+        )}
+        
+>>>>>>> 773f153d2b8edfbf0fc232657f40c65fba79dc46
         <Form.Group className="mb-2" controlId="username">
           <Form.Label>Tên đăng nhập</Form.Label>
           <Form.Control
@@ -85,6 +145,7 @@ const Login = () => {
             placeholder="Tên đăng nhập"
             onChange={(e) => setInputUsername(e.target.value)}
             required
+<<<<<<< HEAD
             isInvalid={!!errors.username} 
           />
 
@@ -92,6 +153,16 @@ const Login = () => {
             {errors.username}
           </Form.Control.Feedback>
         </Form.Group>
+=======
+            isInvalid={!!errors.username}
+            data-testid="username-input" 
+          />
+          <Form.Control.Feedback type="invalid" data-testid="username-error">
+            {errors.username}
+          </Form.Control.Feedback>
+        </Form.Group>
+
+>>>>>>> 773f153d2b8edfbf0fc232657f40c65fba79dc46
         <Form.Group className="mb-2" controlId="password">
           <Form.Label>Mật khẩu</Form.Label>
           <Form.Control
@@ -100,6 +171,7 @@ const Login = () => {
             placeholder="Mật khẩu"
             onChange={(e) => setInputPassword(e.target.value)}
             required
+<<<<<<< HEAD
             isInvalid={!!errors.password} 
           />
           <Form.Control.Feedback type="invalid">
@@ -113,6 +185,33 @@ const Login = () => {
           </Button>
         ) : (
           <Button className="w-100" variant="primary" type="submit" disabled>
+=======
+            isInvalid={!!errors.password}
+            data-testid="password-input" 
+          />
+          <Form.Control.Feedback type="invalid" data-testid="password-error">
+            {errors.password}
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        {!loading ? (
+          <Button
+            className="w-100"
+            variant="primary"
+            type="submit"
+            data-testid="login-button" 
+          >
+            Đăng nhập
+          </Button>
+        ) : (
+          <Button
+            className="w-100"
+            variant="primary"
+            type="submit"
+            disabled
+            data-testid="login-button" 
+          >
+>>>>>>> 773f153d2b8edfbf0fc232657f40c65fba79dc46
             Đang đăng nhập...
           </Button>
         )}
