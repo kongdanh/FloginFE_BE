@@ -48,7 +48,7 @@ jobs:
         run: |
          cd backend
          
-          mvnw clean test 
+          mvn clean test 
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
           SPRING_DATASOURCE_USERNAME: postgres # Mặc định của image postgres
