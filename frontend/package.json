@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "test:e2e": "cypress run",
+    "ci:e2e": "start-server-and-test dev http://localhost:5173 test:e2e"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -39,6 +41,7 @@
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
     "babel-jest": "^30.2.0",
+    "cypress": "^15.6.0",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
@@ -47,6 +50,7 @@
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "react-test-renderer": "^19.2.0",
+    "start-server-and-test": "^2.1.2",
     "vite": "^7.1.7"
   }
 }

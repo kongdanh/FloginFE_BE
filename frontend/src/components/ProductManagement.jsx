@@ -67,6 +67,7 @@ const ProductManagement = () => {
             loadProducts(); // Tải lại danh sách
         } catch (err) {
             setError('Lưu sản phẩm thất bại.');
+            handleCloseFormModal();
         }
     };
 
@@ -89,6 +90,7 @@ const ProductManagement = () => {
             loadProducts(); // Tải lại danh sách
         } catch (err) {
             setError('Xoá sản phẩm thất bại.');
+            handleCloseDeleteModal();
         }
     };
     

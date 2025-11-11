@@ -98,3 +98,11 @@ Bạn cần chạy cả máy chủ Backend và Frontend để ứng dụng hoạ
 ```bash
 cd backend
 mvn clean test
+
+### Frontend Tests
+Để chạy toàn bộ Unit Test và Integration Test cho frontend:
+
+```bash
+cd frontend
+npm test
+
