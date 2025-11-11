@@ -11,7 +11,7 @@
     "test": "jest",
     "test:e2e": "cypress run",
     "ci:e2e": "start-server-and-test dev http://localhost:5173 test:e2e",
-    "test:ci": "jest --watchAll=false"
+    "test:ci": "jest --watchAll=false --coverage"
   },
   "jest": {
     "testEnvironment": "jsdom",

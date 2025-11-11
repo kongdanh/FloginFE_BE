@@ -1,0 +1,79 @@
+# .github/workflows/ci2.yml
+# Dựa trên Listing 17
+
+name: Complete CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ] # [ĐÃ SỬA] Thêm giá trị cho branches [cite: 1097]
+
+jobs:
+  test: # [ĐÃ SỬA] Xóa [cite: 1098] khỏi dòng này
+    runs-on: ubuntu-latest
+
+    # Khởi động dịch vụ database (PostgreSQL) cho backend test [cite: 1104, 1105]
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: testdb # [cite: 1117]
+          POSTGRES_PASSWORD: password # [cite: 1118]
+        ports:
+          - 5432:5432 # [cite: 1119, 1121]
+
+    steps:
+      # 1. Lấy code
+      - name: Checkout Code
+        uses: actions/checkout@v3 # [ĐÃ SỬA] [cite: 1122] Dùng v3 mới hơn
+
+      # 2. Cài đặt Java 17 cho Backend [cite: 1123, 1129]
+      - name: Setup Java 17
+        uses: actions/setup-java@v3 # [cite: 1124]
+        with:
+          java-version: '17' # [cite: 1129]
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # 3. Cài đặt Node.js 20 cho Frontend (giống file của bạn)
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v3 # [cite: 1132, 1134]
+        with:
+          node-version: '20' # Bạn dùng '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      # 4. Chạy Backend Tests (Maven)
+      # Cần set env var cho database để Spring Boot kết nối
+      - name: Run Backend Tests
+        run: |
+          cd backend # [cite: 1142]
+          ./mvn clean test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
+          SPRING_DATASOURCE_USERNAME: postgres # Mặc định của image postgres
+          SPRING_DATASOURCE_PASSWORD: password # Khớp với env của service
+
+      # 5. Cài đặt dependencies cho Frontend
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend # [cite: 1160]
+          npm install # [cite: 1161]
+
+      # 6. Chạy Frontend Unit Tests (Jest)
+      - name: Run Frontend Unit Tests
+        run: |
+          cd frontend # [cite: 1160]
+          npm run test:ci # Sử dụng script 'test:ci' của bạn
+
+      # 7. Chạy Frontend E2E Tests (Cypress)
+      - name: Run Frontend E2E Tests
+        run: |
+          cd frontend # [cite: 1165]
+          npm run ci:e2e # Sử dụng script 'ci:e2e' của bạn
+
+      # 8. (Tùy chọn) Upload Coverage (nếu bạn đã cài đặt Codecov)
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3 #
+        with:
+          # Lấy các file coverage từ cả backend và frontend 
+          files: ./backend/target/site/jacoco/jacoco.xml,./frontend/coverage/lcov.info
