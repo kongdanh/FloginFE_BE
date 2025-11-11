@@ -33,7 +33,7 @@ public class Category {
     @NotBlank(message = &quot;Category name is required&quot;)
     @Size(max = 100, message = &quot;Category name must not exceed 100 characters&quot;)
     @Column(nullable = false, unique = true, length = 100)
-<span class="nc" id="L36">    private String name;</span>
+<span class="fc" id="L36">    private String name;</span>
 
     @Column(columnDefinition = &quot;TEXT&quot;)
 <span class="nc" id="L39">    private String description;</span>

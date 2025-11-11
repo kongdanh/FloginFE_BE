@@ -9,9 +9,9 @@ Flogin Backend,com.flogin.controller,ProductController,0,38,0,0,0,8,0,6,0,6
 Flogin Backend,com.flogin.config,EncodingFilter,0,14,0,0,0,5,0,2,0,2
 Flogin Backend,com.flogin.config,GlobalExceptionHandler,0,24,0,4,0,6,0,4,0,2
 Flogin Backend,com.flogin.entity,User,571,60,97,3,25,14,71,11,22,10
-Flogin Backend,com.flogin.entity,Product,656,49,124,0,57,13,90,13,28,13
+Flogin Backend,com.flogin.entity,Product,634,71,124,0,50,20,89,14,27,14
 Flogin Backend,com.flogin.entity,LoginHistory,505,0,84,0,44,0,73,0,31,0
-Flogin Backend,com.flogin.entity,Category,352,23,60,0,18,6,48,4,18,4
+Flogin Backend,com.flogin.entity,Category,349,26,60,0,17,7,47,5,17,5
 Flogin Backend,com.flogin.entity,User.Role,3,25,0,0,1,6,1,2,1,2
 Flogin Backend,com.flogin.entity,LoginHistory.FailureReason,3,0,0,0,1,0,1,0,1,0
 Flogin Backend,com.flogin.dto,CategoryDto,115,0,22,0,4,0,20,0,9,0
